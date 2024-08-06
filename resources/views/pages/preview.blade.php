@@ -40,33 +40,34 @@
         .gjs-pn-btn:nth-child(7) {
             display: none;
         }
+
         .toaster-container {
-    position: fixed;
-    top: 20px;
-    left: -100%;
-    transform: translateY(-50%);
-    transition: left 0.5s ease-in-out;
-    z-index: 1001;
-}
+            position: fixed;
+            top: 20px;
+            left: -100%;
+            transform: translateY(-50%);
+            transition: left 0.5s ease-in-out;
+            z-index: 1001;
+        }
 
-.toaster {
-    background-color: #000;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    position: relative;
-}
+        .toaster {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            position: relative;
+        }
 
-.toaster.show {
-    position: relative;
-    left: 10px !important;
-}
+        .toaster.show {
+            position: relative;
+            left: 10px !important;
+        }
 
-.toaster.hide {
-    left: -30%;
-}
+        .toaster.hide {
+            left: -30%;
+        }
     </style>
 </head>
 
@@ -75,16 +76,20 @@
 
     <span class="gjs-pn-btn" style="position:absolute; z-index:1000 ; left:110px; top:5px" id="save-btn">
 
-        <svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width:22px" viewBox="0 0 32 32" id="save">
-            <path fill="rgb(185, 165, 166)" d="M9.09,30a2.33,2.33,0,0,1-.74-.11,3.44,3.44,0,0,1-2.29-3.45V5.56A3.32,3.32,0,0,1,9.06,2H22.94a3.32,3.32,0,0,1,3,3.56V26.44a3.44,3.44,0,0,1-2.29,3.45,2.71,2.71,0,0,1-3.1-1.29L16,21.48,11.45,28.6A2.82,2.82,0,0,1,9.09,30ZM16,18.63a1,1,0,0,1,.84.46l5.39,8.43h0a.79.79,0,0,0,.86.45,1.48,1.48,0,0,0,.85-1.53V5.56c0-.92-.53-1.56-1-1.56H9.06c-.47,0-1,.64-1,1.56V26.44A1.48,1.48,0,0,0,8.91,28a.79.79,0,0,0,.86-.45l5.39-8.43A1,1,0,0,1,16,18.63Z"></path>
+        <svg id="Layer_1" style="enable-background:new 0 0 30 30;" style="display: block; max-width:22px" version="1.1" viewBox="0 0 30 30" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path  fill="rgb(185, 165, 166)" d="M22,4h-2v6c0,0.552-0.448,1-1,1h-9c-0.552,0-1-0.448-1-1V4H6C4.895,4,4,4.895,4,6v18c0,1.105,0.895,2,2,2h18  c1.105,0,2-0.895,2-2V8L22,4z M22,24H8v-6c0-1.105,0.895-2,2-2h10c1.105,0,2,0.895,2,2V24z" />
+            <rect height="5" width="2" x="16" y="4" />
         </svg>
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width:22px" viewBox="0 0 32 32" id="save">
+            <path fill="rgb(185, 165, 166)" d="M9.09,30a2.33,2.33,0,0,1-.74-.11,3.44,3.44,0,0,1-2.29-3.45V5.56A3.32,3.32,0,0,1,9.06,2H22.94a3.32,3.32,0,0,1,3,3.56V26.44a3.44,3.44,0,0,1-2.29,3.45,2.71,2.71,0,0,1-3.1-1.29L16,21.48,11.45,28.6A2.82,2.82,0,0,1,9.09,30ZM16,18.63a1,1,0,0,1,.84.46l5.39,8.43h0a.79.79,0,0,0,.86.45,1.48,1.48,0,0,0,.85-1.53V5.56c0-.92-.53-1.56-1-1.56H9.06c-.47,0-1,.64-1,1.56V26.44A1.48,1.48,0,0,0,8.91,28a.79.79,0,0,0,.86-.45l5.39-8.43A1,1,0,0,1,16,18.63Z"></path>
+        </svg> -->
     </span>
 
     <div class="toaster-container" id="toaster-container">
-    <div class="toaster" id="toaster">
-        <span id="toaster-message"></span>
+        <div class="toaster" id="toaster">
+            <span id="toaster-message"></span>
+        </div>
     </div>
-</div>
 
     <div id="gjs" style="height:0px; overflow:hidden">
         {!! $page->content !!}
@@ -97,8 +102,8 @@
         const loadProjectEndpoint = `{{ url('/api/pages/${projectId}/load-project') }}`;
         const storeProjectEndpoint = `{{ url('/api/pages/${projectId}/store-project') }}`;
         const toasterContainer = document.getElementById('toaster-container');
-const toaster = document.getElementById('toaster');
-const toasterMessage = document.getElementById('toaster-message');
+        const toaster = document.getElementById('toaster');
+        const toasterMessage = document.getElementById('toaster-message');
 
 
         window.editor = grapesjs.init({
@@ -468,28 +473,28 @@ const toasterMessage = document.getElementById('toaster-message');
 
 
 
-       
-    // Add your save logic here
-    // ...
 
-    // Show toaster
- 
+        // Add your save logic here
+        // ...
+
+        // Show toaster
+
         document.getElementById('save-btn').addEventListener('click', function() {
             const html = editor.getHtml();
             const css = editor.getCss();
             const pageId = '{{ $page->id }}';
             toasterMessage.textContent = 'Page saved successfully!';
-    toasterContainer.classList.add('show');
-    toasterContainer.style.left = '10px'; // Add this line
+            toasterContainer.classList.add('show');
+            toasterContainer.style.left = '10px'; // Add this line
 
-    // Hide toaster after 2 seconds
-    setTimeout(() => {
-        toasterContainer.classList.remove('show');
-        toasterContainer.classList.add('hide');
-        toasterContainer.style.left = '-100%';
-    }, 2000);
+            // Hide toaster after 2 seconds
+            setTimeout(() => {
+                toasterContainer.classList.remove('show');
+                toasterContainer.classList.add('hide');
+                toasterContainer.style.left = '-100%';
+            }, 2000);
 
-           
+
 
             const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
