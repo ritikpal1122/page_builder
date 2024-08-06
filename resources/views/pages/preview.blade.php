@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $page->title }}</title>
     <link href="{{ asset('grapesjs/css/grapes.min.css') }}" rel="stylesheet">
     <script src="{{ asset('grapesjs/js/grapes.min.js') }}"></script>
@@ -23,28 +24,81 @@
     <script src="{{ asset('grapesjs/js/grapesjs-style-bg.js') }}"></script>
     <script src="{{ asset('grapesjs/js/grapesjs-blocks-flexbox.js') }}"></script>
     <script src="{{ asset('grapesjs/js/grapesjs-blocks-basic.js') }}"></script>
-    
     <style>
         body,
         html {
+            margin: 0;
             height: 100%;
             margin: 0;
+
         }
+
+        .gjs-pn-btn:nth-child(4) {
+            display: none;
+        }
+
+        .gjs-pn-btn:nth-child(7) {
+            display: none;
+        }
+        .toaster-container {
+    position: fixed;
+    top: 20px;
+    left: -100%;
+    transform: translateY(-50%);
+    transition: left 0.5s ease-in-out;
+    z-index: 1001;
+}
+
+.toaster {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    position: relative;
+}
+
+.toaster.show {
+    position: relative;
+    left: 10px !important;
+}
+
+.toaster.hide {
+    left: -30%;
+}
     </style>
 </head>
 
 <body>
+
+
+    <span class="gjs-pn-btn" style="position:absolute; z-index:1000 ; left:110px; top:5px" id="save-btn">
+
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: block; max-width:22px" viewBox="0 0 32 32" id="save">
+            <path fill="rgb(185, 165, 166)" d="M9.09,30a2.33,2.33,0,0,1-.74-.11,3.44,3.44,0,0,1-2.29-3.45V5.56A3.32,3.32,0,0,1,9.06,2H22.94a3.32,3.32,0,0,1,3,3.56V26.44a3.44,3.44,0,0,1-2.29,3.45,2.71,2.71,0,0,1-3.1-1.29L16,21.48,11.45,28.6A2.82,2.82,0,0,1,9.09,30ZM16,18.63a1,1,0,0,1,.84.46l5.39,8.43h0a.79.79,0,0,0,.86.45,1.48,1.48,0,0,0,.85-1.53V5.56c0-.92-.53-1.56-1-1.56H9.06c-.47,0-1,.64-1,1.56V26.44A1.48,1.48,0,0,0,8.91,28a.79.79,0,0,0,.86-.45l5.39-8.43A1,1,0,0,1,16,18.63Z"></path>
+        </svg>
+    </span>
+
+    <div class="toaster-container" id="toaster-container">
+    <div class="toaster" id="toaster">
+        <span id="toaster-message"></span>
+    </div>
+</div>
 
     <div id="gjs" style="height:0px; overflow:hidden">
         {!! $page->content !!}
     </div>
     <div id="blocks"></div>
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript">
         const projectId = '{{ $page->id }}'
         const loadProjectEndpoint = `{{ url('/api/pages/${projectId}/load-project') }}`;
         const storeProjectEndpoint = `{{ url('/api/pages/${projectId}/store-project') }}`;
+        const toasterContainer = document.getElementById('toaster-container');
+const toaster = document.getElementById('toaster');
+const toasterMessage = document.getElementById('toaster-message');
 
 
         window.editor = grapesjs.init({
@@ -411,6 +465,55 @@
                 },
             },
         });
+
+
+
+       
+    // Add your save logic here
+    // ...
+
+    // Show toaster
+ 
+        document.getElementById('save-btn').addEventListener('click', function() {
+            const html = editor.getHtml();
+            const css = editor.getCss();
+            const pageId = '{{ $page->id }}';
+            toasterMessage.textContent = 'Page saved successfully!';
+    toasterContainer.classList.add('show');
+    toasterContainer.style.left = '10px'; // Add this line
+
+    // Hide toaster after 2 seconds
+    setTimeout(() => {
+        toasterContainer.classList.remove('show');
+        toasterContainer.classList.add('hide');
+        toasterContainer.style.left = '-100%';
+    }, 2000);
+
+           
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": "{{csrf_token()}}"
+                },
+                type: 'POST',
+                url: '/save-design',
+                data: {
+                    html: html,
+                    css: css,
+                    page_id: pageId
+                },
+                success: function(response) {
+                    console.log(response)
+                },
+                error: function(a, b, c) {
+                    console.log(a, b, c);
+                }
+            });
+        });
+
+
 
         function renderHTML() {
             const PAGE_CONTENTS = [{
